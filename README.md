@@ -17,6 +17,8 @@ Codes are licensed under MIT.
 
 ## Usage
 
+Before we set up the bot, 'MongoDB' is required!!
+
 1. Run the Jar in console. And for the first time with no configurations, it should just create a default configuration file and exit.
 2. Change the values of the configuration where 'botToken' are from [Kaiheila Developer](https://developer.kaiheila.cn/app/index) and the connection type should be 'WebSocket'.
 3. Run the Jar once again, and if you see `客户端启动成功，开始监听！`, it runs properly.
