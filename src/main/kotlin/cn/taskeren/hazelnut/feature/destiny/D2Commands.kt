@@ -180,7 +180,7 @@ object D2Commands {
 						} else {
 							val lastItemEn = d2Db.findByHash(lastItem.hash!!, BungieLanguage.English)!!
 							val text = """
-								**${lastItem.displayName}***[${lastItemEn.displayName}]* (${lastItem.hash})
+								**${lastItem.displayName}**[${lastItemEn.displayName}] (${lastItem.hash})
 								${lastItem.displayLore}
 								[light.gg](${lastItem.getLightGGUrl()})
 								[物品图标](${lastItem.displayProperties.icon?.toBungieResourceUrl()})
