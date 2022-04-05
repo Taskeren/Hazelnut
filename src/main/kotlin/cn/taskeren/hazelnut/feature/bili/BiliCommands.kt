@@ -3,7 +3,7 @@ package cn.taskeren.hazelnut.feature.bili
 import city.warlock.d2api.GSON
 import cn.taskeren.brigadierx.*
 import cn.taskeren.hazelnut.core.command.HazelnutCommandManager
-import cn.taskeren.hazelnut.core.config.hazelnutConfig
+import cn.taskeren.hazelnut.core.config.HazelnutConfig
 import cn.taskeren.hazelnut.core.util.fromJson
 import cn.taskeren.hazelnut.feature.bili.model.BasicDataModel
 import cn.taskeren.hazelnut.feature.bili.model.BiliLiveRoom
@@ -46,9 +46,11 @@ object BiliCommands {
 			register("lives") {
 				executesX { ctx ->
 					thread {
-						val total = hazelnutConfig.biliLiveUsers.size
-						val infoList = hazelnutConfig.biliLiveUsers.map { BiliApi.getLiveStatus(it.toInt()) }
-						val exists = infoList.filter { it.isSuccess }.mapNotNull { it.getOrNull() }.map { GSON.fromJson<BasicDataModel<BiliLiveRoom>>(it.string()) }
+						val total = HazelnutConfig.propBSpecUsers.stringList.size
+						val infoList = HazelnutConfig.propBSpecUsers.stringList
+							.filterNot { it == "0" }.map { BiliApi.getLiveStatus(it.toInt()) }
+						val exists = infoList.filter { it.isSuccess }.mapNotNull { it.getOrNull() }
+							.map { GSON.fromJson<BasicDataModel<BiliLiveRoom>>(it.string()) }
 						val livingUsers = exists.filter { it.data.isLiving() }
 						val livingCount = exists.count { it.data.isLiving() }
 						if(livingCount == 0) {

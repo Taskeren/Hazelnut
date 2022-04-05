@@ -1,53 +1,29 @@
 package cn.taskeren.hazelnut.core.config
 
-import city.warlock.d2api.GSON
-import cn.taskeren.hazelnut.logger
-import com.google.gson.GsonBuilder
+import TConfig.Configuration
+import TConfig.Property
 import java.io.File
 import kotlin.system.exitProcess
 
-class HazelnutConfig internal constructor(
-	val botToken: String,
-	val biliLiveUsers: List<String>
-)
+object HazelnutConfig {
 
-lateinit var hazelnutConfig: HazelnutConfig
+	private val config = Configuration(File(".hazelnut/hazelnut.cfg"))
 
-private val prettyPrintGson = GsonBuilder().setPrettyPrinting().create()
+	val propBotToken: Property = config["general", "bot-token", "?", "机器人凭据（在 https://developer.kaiheila.cn 获取）"]
+	val propMongoDBUri: Property = config["destiny", "database-uri", "mongodb://localhost:27017", "数据库链接"]
 
-fun reloadHazelnutConfig() {
-	val file = File("./hazelnut.config")
-	runCatching {
-		if(!file.exists()) {
-			file.createNewFile()
-			hazelnutConfig = HazelnutConfig("TOKEN_HERE!", emptyList())
-			saveHazelnutConfig()
+	val propBSpecUsers: Property = config["bilibili", "spec-users", arrayOf("0"), "特别关注的B站用户"]
+
+	init {
+		config.save()
+
+		// 首次启动检查
+		if(propBotToken.string == "?") {
+			println("配置文档已生成，位于 \".hazelnut/hazelnut.cfg\"，请先修改配置文档")
+			exitProcess(0)
 		}
+	}
 
-		hazelnutConfig = GSON.fromJson(file.bufferedReader(), HazelnutConfig::class.java)
-	}.onFailure {
-		System.err.println("Cannot load configuration!")
-		it.printStackTrace()
-		exitProcess(1)
-	}
-}
+	fun save() = config.save()
 
-fun saveHazelnutConfig() {
-	val file = File("./hazelnut.config")
-	runCatching {
-		file.writeText(prettyPrintGson.toJson(hazelnutConfig))
-	}.onFailure {
-		System.err.println("Cannot save configuration!")
-		it.printStackTrace()
-	}
-}
-
-fun checkHazelnutConfig() {
-	if(hazelnutConfig.botToken == "TOKEN_HERE!") {
-		logger.warn("机器人 Token 尚未配置，请配置后再启动！")
-		exitProcess(-1)
-	}
-	if(hazelnutConfig.biliLiveUsers.isEmpty()) {
-		logger.warn("空下饭主播列表！")
-	}
 }

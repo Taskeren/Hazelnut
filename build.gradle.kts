@@ -29,6 +29,9 @@ dependencies {
     // Github: Taskeren/BrigadierX
     implementation("com.github.Taskeren:brigadierX:1.2")
 
+    // Github: Taskeren/TConfig
+    implementation("com.github.Taskeren:TConfig:1.0")
+
     testImplementation(kotlin("test"))
 }
 

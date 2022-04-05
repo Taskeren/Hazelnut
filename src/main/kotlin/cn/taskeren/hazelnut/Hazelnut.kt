@@ -13,10 +13,10 @@ import org.slf4j.LoggerFactory
 
 val logger: Logger = LoggerFactory.getLogger("Hazelnut")
 
-val kApi by lazy { KToken(KToken.TokenType.Bot, hazelnutConfig.botToken).toApi() } // "1/MTA1NDI=/tDfzmAhmUfOKyKsu2baPyQ=="
+val kApi by lazy { KToken(KToken.TokenType.Bot, HazelnutConfig.propBotToken.string).toApi() }
 val kBot by lazy { KaiClient(kApi) }
 
-val d2Db by lazy { DestinyDatabase() }
+val d2Db by lazy { DestinyDatabase(HazelnutConfig.propMongoDBUri.string) }
 
 fun main() {
 	println("榛子！")
@@ -24,8 +24,6 @@ fun main() {
 	logger.info("正在加载榛子")
 
 	logger.info("正在加载配置")
-	reloadHazelnutConfig()
-	checkHazelnutConfig()
 
 	logger.info("正在注册指令")
 	BotDefaultCommands.register()
