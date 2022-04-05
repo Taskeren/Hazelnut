@@ -1,0 +1,9 @@
+
+/.gradle
+/.idea
+/build
+
+# running
+hazelnut.config
+latest.log
+gradle-wrapper.properties
