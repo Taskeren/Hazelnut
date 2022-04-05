@@ -125,7 +125,7 @@ object D2Commands {
 								}
 								val defCn = d2Db.getItemDefinition(BungieLanguage.Chinese).findByHash(hash)!!
 								val defEn = d2Db.getItemDefinition(BungieLanguage.English).findByHash(hash)!!
-								ctx.source.sendMessage("找到了：${defCn.displayName}[${defEn.displayName}](${hash})")
+								ctx.source.sendMessage("找到了：${defCn.displayName} [${defEn.displayName}] (${hash})")
 								// 更新上下文
 								updateContext(ctx.source) {
 									lastFindItem = defCn
@@ -138,7 +138,7 @@ object D2Commands {
 											.findByHash(it)!! to d2Db.getItemDefinition(BungieLanguage.English)
 											.findByHash(it)!!
 									}.joinToString(separator = "\n") {
-										" - ${it.first.displayName}[${it.second.displayName}](${it.first.hash})"
+										" - ${it.first.displayName} [${it.second.displayName}] (${it.first.hash})"
 									}
 								ctx.source.sendMessage("你找的是不是：\n$text")
 							} else {
@@ -180,7 +180,7 @@ object D2Commands {
 						} else {
 							val lastItemEn = d2Db.findByHash(lastItem.hash!!, BungieLanguage.English)!!
 							val text = """
-								**${lastItem.displayName}**[${lastItemEn.displayName}] (${lastItem.hash})
+								**${lastItem.displayName}** [${lastItemEn.displayName}] (${lastItem.hash})
 								${lastItem.displayLore}
 								[light.gg](${lastItem.getLightGGUrl()})
 								[物品图标](${lastItem.displayProperties.icon?.toBungieResourceUrl()})
